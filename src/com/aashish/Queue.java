@@ -1,32 +1,19 @@
 package com.aashish;
 import java.util.LinkedList;
 import java.util.*;
-public class Queue {
+import java.util.Stack;
+
+class queue {
     public static void main(String[] args) throws Exception {
-//        MyQueue q=new MyQueue();
-//        q.enqueue(1);
-//        q.enqueue(11);
-//        q.dequeue();
-//        q.enqueue(12);
-//        q.enqueue(13);
-//        q.dequeue();
-//        q.enqueue(14);
-//        q.dequeue();
-//        q.dequeue();
-
-        ArQueue q=new ArQueue(5);
-        q.enqueue(1);
-        q.enqueue(11);
-        q.dequeue();
-        q.enqueue(12);
-        q.getFront();
-        q.enqueue(13);
-        q.dequeue();
-        q.enqueue(14);
-        q.dequeue();
-        q.getFront();
-        q.dequeue();
-
+        stackUsingQueue q=new stackUsingQueue();
+        q.push(1);
+        q.push(4);
+        q.push(7);
+        q.push(8);
+        q.pop();
+        q.pop();
+        q.pop();
+        q.pop();
     }
 }
 //                                               QUEUE USING LINKED LIST
@@ -123,5 +110,45 @@ class circularQueue{
         }
         System.out.println(ele);
     }
-    
+
+}
+
+//                                               IMPLEMENT QUEUE USING STACK
+
+class queueUsingStack{
+    Stack<Integer> s1=new Stack<>();
+    Stack<Integer> s2=new Stack<>();
+    void push(int data){
+        s1.push(data);
+    }
+    void pop(){
+        while(!s1.isEmpty()){
+            s2.push(s1.pop());
+        }
+        int ele=s2.pop();
+        while(!s2.isEmpty()){
+            s1.push(s2.pop());
+        }
+        System.out.println(ele);
+    }
+}
+
+//                                                IMPLEMENT STACK USING QUEUE
+
+class stackUsingQueue{
+        Queue<Integer> q1=new LinkedList<>();
+        Queue<Integer> q2=new LinkedList<>();
+        void push(int data){
+           while(!q1.isEmpty()){
+               q2.offer(q1.poll());
+           }
+           q1.offer(data);
+            while(!q2.isEmpty()){
+                q1.offer(q2.poll());
+            }
+        }
+        void pop(){
+            System.out.println(q1.poll());
+        }
+
 }
