@@ -1,6 +1,7 @@
 package com.aashish;
 
 import java.util.*;
+import java.util.Stack;
 
 public class Tree {
     static class Node {
@@ -17,39 +18,39 @@ public class Tree {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         Node root = createTree();
-//        inOrder(root);
-//        System.out.println();
-//
-//        preOrder(root);
-//        System.out.println();
-//
-//        postOrder(root);
-//        System.out.println();
-//
-//        // Height of a particular node in a binary tree (we are considering node count as its height ex a single node in binary tree have height =1)
-//        System.out.println(getHeight(root));
-//
-//        // Size of a binary tree (No of nodes in a tree);
-//        System.out.println(getSize(root));
-//
-//        // Minimum element in the tree
-//        System.out.println(getMin(root));
-//
-//        // Maximum element in the tree
-//        System.out.println(getMax(root));
-//
-//        // level order traversal in O(N^2) time complexity
-//        for (int i = 1; i <= getHeight(root); i++) {
-//            levelOrder(root, i);
-//        }
-//        System.out.println();
-//
-//        // level order optimised traversal in O(N) time complexity using queue data structure
-//        optimisedLevelOrder(root);
-//        System.out.println();
-//
-//        // Print level order traversal in line by line manner
-//        lineByLineLevelOrder(root);
+        inOrder(root);
+        System.out.println();
+
+        preOrder(root);
+        System.out.println();
+
+        postOrder(root);
+        System.out.println();
+
+        // Height of a particular node in a binary tree (we are considering node count as its height ex a single node in binary tree have height =1)
+        System.out.println(getHeight(root));
+
+        // Size of a binary tree (No of nodes in a tree);
+        System.out.println(getSize(root));
+
+        // Minimum element in the tree
+        System.out.println(getMin(root));
+
+        // Maximum element in the tree
+        System.out.println(getMax(root));
+
+        // level order traversal in O(N^2) time complexity
+        for (int i = 1; i <= getHeight(root); i++) {
+            levelOrder(root, i);
+        }
+        System.out.println();
+
+        // level order optimised traversal in O(N) time complexity using queue data structure
+        optimisedLevelOrder(root);
+        System.out.println();
+
+        // Print level order traversal in line by line manner
+        lineByLineLevelOrder(root);
 
         // Left view of a Binary Tree
         leftView(root);
@@ -65,7 +66,16 @@ public class Tree {
 
         // Bottom View of a Binary tree
         bottomView(root);
-    }
+
+        // Printing all traversals (inorder,reorder,postorder) in one traversal
+        allOrder(root);
+
+         //Diameter(Largest path between two leaf Nodes ) of a Binary tree
+        diameter(root);
+
+        zigZagOrderTraversal(root);
+
+        }
 
     static Node createTree() {
         Node root = null;
@@ -287,5 +297,118 @@ public class Tree {
         for(int i:list){
             System.out.print(i+" ");
         }
+    }
+
+    private static void allOrder(Node root) {
+        Stack<Pair> st=new Stack<Pair>();
+        st.push(new Pair(root,1));
+        ArrayList<Integer> pre=new ArrayList<>();
+        ArrayList<Integer> in=new ArrayList<>();
+        ArrayList<Integer> post=new ArrayList<>();
+        while(!st.isEmpty()){
+            Pair p=st.pop();
+            if(p.b==1){
+                pre.add(p.a.data);
+                p.b ++;
+                st.push(p);
+                if(p.a.left!=null){
+                    st.push(new Pair(p.a.left,1));
+                }
+            }
+            else  if(p.b==2){
+                in.add(p.a.data);
+                p.b++;
+                st.push(p);
+                if(p.a.right!=null){
+                    st.push(new Pair(p.a.right,1));
+                }
+            }
+            else{
+                post.add(p.a.data);
+            }
+        }
+        System.out.println();
+        System.out.print("Pre order Traversal :--");
+        for(int i:pre){
+           System.out.print(i+" ");
+        }
+        System.out.println();
+        System.out.print("In order Traversal :--");
+        for(int i:in){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        System.out.print("Post order Traversal :--");
+        for(int i:post){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+    }
+
+
+    private static void diameter(Node root) {
+       int[] diameter=new int[1];
+       height(root,diameter);
+        System.out.println(diameter[0]);
+    }
+
+    private static int height(Node node, int[] diameter) {
+        if (node == null) {
+            return 0;
+        }
+        int lh = height(node.left, diameter);
+        int rh = height(node.right, diameter);
+        diameter[0] = Math.max(diameter[0], lh + rh);
+        return 1 + Math.max(lh, rh);
+    }
+
+    private static void zigZagOrderTraversal(Node root) {
+        ArrayList<ArrayList<Integer>> list=new ArrayList<>();
+        Queue<Node> q=new LinkedList<>();
+        q.offer(root);
+        q.offer(null);
+        int count=0;
+        ArrayList<Integer> l=new ArrayList<Integer>();
+        while(!q.isEmpty()){
+            Node cur=q.poll();
+            if(cur==null){
+                if(count%2==0){
+                    list.add(l);
+                }
+                else{
+                    ArrayList<Integer> temp=reverseArrayList(l);
+                    list.add(temp);
+                }
+                count++;
+                if(q.isEmpty()) break;
+                q.offer(null);
+                l=new ArrayList<Integer>();
+            }
+            else{
+                l.add(cur.data);
+                if(cur.left!=null){
+                    q.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    q.offer(cur.right);
+                }
+            }
+        }
+       for(ArrayList<Integer> e:list){
+           System.out.print(e);
+       }
+    }
+    public static ArrayList<Integer> reverseArrayList(ArrayList<Integer> alist)
+    {
+        // Arraylist for storing reversed elements
+        ArrayList<Integer> revArrayList = new ArrayList<Integer>();
+        for (int i = alist.size() - 1; i >= 0; i--) {
+
+            // Append the elements in reverse order
+            revArrayList.add(alist.get(i));
+        }
+
+        // Return the reversed arraylist
+        return revArrayList;
     }
 }

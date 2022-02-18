@@ -6,38 +6,7 @@ import java.util.Stack;
 class queue {
     public static void main(String[] args) throws Exception {
         Scanner s=new Scanner(System.in);
-        int [] petrol=new int[34];
-        for (int i = 0; i < 34; i++) {
-            petrol[i]=s.nextInt();
-        }
-        int [] distance=new int[34];
-        for (int i = 0; i < 34; i++) {
-            distance[i]=s.nextInt();
-        }
-        int n=petrol.length;
-        for(int i=0;i<n;i++){
-            if(distance[i]<=petrol[i]){
-                int c=i;
-                int count=0;
-                int remain=0;
-                for(int j=i;j<i+n;j++){
-                    if(distance[j%n]<=petrol[j%n]){
-                        remain+=petrol[j%n]-distance[j%n];
-                        count++;
-                    }
-                    else{
-                        remain-=distance[j%n]-petrol[j%n];
-                        if(remain<0){
-                            break;
-                        }
-                        count++;
-                    }
-                }
-                if(count==4){
-                    System.out.println(i);
-                }
-            }
-        }
+
     }
 }
 //                                               QUEUE USING LINKED LIST
