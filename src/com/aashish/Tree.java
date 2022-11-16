@@ -400,15 +400,10 @@ public class Tree {
     }
     public static ArrayList<Integer> reverseArrayList(ArrayList<Integer> alist)
     {
-        // Arraylist for storing reversed elements
         ArrayList<Integer> revArrayList = new ArrayList<Integer>();
         for (int i = alist.size() - 1; i >= 0; i--) {
-
-            // Append the elements in reverse order
             revArrayList.add(alist.get(i));
         }
-
-        // Return the reversed arraylist
         return revArrayList;
     }
 }
